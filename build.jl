@@ -96,22 +96,22 @@ mktempdir() do tmp_dir
                     end
                 end
             end
-
-            archive_filename = "$pkgname-$version+$buildnr-$(triplet(platform)).tar.gz"
-
-            download_hash = archive_artifact(artifact_hash, joinpath(build_path, archive_filename))
-
-            bind_artifact!(
-                artifact_toml,
-                "$(pkgname)_app",
-                artifact_hash,
-                platform = platform,
-                force = true,
-                download_info = Tuple[(
-                    "$publish_url_root/v$(URIParser.escape(string(version) * "+" * string(buildnr)))/$archive_filename",
-                    download_hash,
-                )]
-            )
         end
+
+        archive_filename = "$pkgname-$version+$buildnr-$(triplet(platform)).tar.gz"
+
+        download_hash = archive_artifact(artifact_hash, joinpath(build_path, archive_filename))
+
+        bind_artifact!(
+            artifact_toml,
+            "$(pkgname)_app",
+            artifact_hash,
+            platform = platform,
+            force = true,
+            download_info = Tuple[(
+                "$publish_url_root/v$(URIParser.escape(string(version) * "+" * string(buildnr)))/$archive_filename",
+                download_hash,
+            )],
+        )
     end
 end
