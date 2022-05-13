@@ -8,7 +8,7 @@ using FilePaths
 
 pkgname = "BlinkElectron"
 version = v"4.0.4"
-buildnr = 0
+buildnr = 1
 
 build_path = joinpath(@__DIR__, "build")
 

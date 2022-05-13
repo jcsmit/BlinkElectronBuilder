@@ -1,6 +1,10 @@
 # This is a workflow to build and release Julia artifacts
 name: Build
 
+# Set permissions granted to GITHUB_TOKEN for the workflow 
+permissions:
+  actions: write
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push (with version tag) requests for the main branch
