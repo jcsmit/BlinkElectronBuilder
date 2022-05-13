@@ -1,28 +1,45 @@
+# This is a workflow to build and release Julia artifacts
 name: Build
 
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push (with version tag) requests for the main branch
   push:
     branches:
-      - master
+      - main
     tags:
       - v*
 
+# Define the jobs that make up the workflow
 jobs:
+  # This workflow contains a single job called "build"
   build:
+    # The type of runner the job will run on
     runs-on: ubuntu-latest
+
+    # The sequence of steps that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v1.0.0
-      - uses: julia-actions/setup-julia@latest
+      # Checks out the repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v3
+
+      # Set up specific version of Julia and add to PATH
+      - uses: julia-actions/setup-julia@v1
         with:
-          version: 1.7
+          version: '1.7'
+      
+      # Run command to instantiate environment
       - name: Instantiate environment
         run: julia --project --color=yes -e 'using Pkg; Pkg.instantiate()'
+
+      # Run command to build artifacts
       - name: Run build
         run: julia --project --color=yes build.jl
+
+      # Run command to create release
       - name: Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')    # gate to tagged pushes
         with:
-          files: build/**
+          files: build/**                           # assets to include in release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
